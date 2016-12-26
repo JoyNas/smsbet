@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block afterbody %}
+<script type="text/javascript">
+onload = function() {
+    document.getElementById('id_username').focus();
+};
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div style="width:500px; margin: auto;">
+    <h2>Login</h2>
+    <form action="" method="post">{% csrf_token %}
+        <fieldset>
+            <ul>
+                {{ form.as_ul }}
+                <li>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <input type="submit" value="Submit" class="btn" />
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

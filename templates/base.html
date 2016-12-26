@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;  charset=iso-8859-1" />
+    <meta name="description" content="An minimal site format" />
+    <meta name="keywords" content="blog" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/forms.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css" media="all" />
+ <title>shoutin sms</title>
+</head>
+
+<body>
+   <div id="container">
+
+
+
+       <div id="header"><h1><a href="/">shoutin</a><span>sms</span></h1></div>
+
+      <div id="wrapper">
+
+        <div id="navigation">
+           <ul>
+               {% block menu %}
+               <li>Welcome</li>
+               {% endblock %}
+           </ul>
+        </div>
+
+        <div id="content-wrapper">
+            <div id="content">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message  in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% block content %}
+            {% block bodytitle %}
+            {% if user.is_staff %}
+                <h3 class="post-title"><a href="#">send customized bulk sms</a></h3><span class="date"><script type="text/javascript">new Date();</script></span>
+                <p>
+                A simple way to send bulk sms.
+                </p>
+            {% else %}
+                <h3 class="post-title"><a href="#">Campaign manager</a></h3><span class="date"><script type="text/javascript">new Date();</script></span>
+                <p>
+                A simple way to manage sms subscriptions.
+                </p>
+            {% endif %}
+            {% endblock %}
+            {% if user.is_staff %}
+                <p>How does it work?</p>
+                <ol>
+                        <li>Upload a csv-file (we call it a batch) containing
+                            <ul>
+                                <li>phonenumber</li>
+                                <li>firstname</li>
+                                <li>lastname</li>
+                            </ul>
+                            <note>Make sure the file is saved in csv format</note>
+                            
+                            <li>
+                            Enter the text to send using place-holders for the first name and last name. e.g. "$firstname, thank you for coming to the show..."
+                            <code>Note that the place-holders are prefixed by $</code>
+                            </li>
+                        <li>Send the message</li>
+                </ol>
+                {% else %}
+                <p>How does it work?</p>
+                <ol>
+                   <li><a href="{% url check_pin %}">Check if a pin is valid</a></li>
+                   <li><a href="{% url check_sub %}">Check if a number is subscribed</a></li>
+                   <li><a href="{% url add_sub %}">Subscribe with pin and phone number</a></li>
+                </ol>
+                {% endif %}
+            {% endblock %}
+             </div>
+        </div>
+
+        <div id="sidebar-wrapper">
+             {% if user.is_authenticated %}
+             Welcome {{ user.username }}, <a href="{% url 'site_logout' %}">logout</a>
+             {% else %}
+               <a href="{% url 'site_login' %}">login</a>
+             {% endif %}
+          <div id="sidebar">
+          {% block sidebar %}
+           <h3>Things to do</h3>
+           <ul id="sidenotes">
+               {% if user.is_staff %}
+               <li><a href="">get alternate numbers</a></li>
+               {% endif %}
+               {% if user.is_authenticated %}
+               <li><a href="">Check if a pin is valid</a></li>
+               <li><a href="">Check if a number is subscribed</a></li>
+               <li><a href="">Subscribe with pin and phone number</a></li>
+               {% else %}
+               <a href="">You need to login first...</a>
+               {% endif %}
+           </ul>
+           {% endblock %}
+          </div>
+        </div>
+
+        <div id="footer">&copy; 2013 <a href="http://www.evincesystems.com">Evince Systems</a></div>
+
+      </div>
+
+   </div>
+</body>
+{% block afterbody %}
+{% endblock %}
+
+</html>
+
